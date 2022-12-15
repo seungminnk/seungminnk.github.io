@@ -15,15 +15,15 @@ API 서버는 Spring Boot로 구성하고, Spring Security를 이용하여 Keycl
 ## Client 생성하기
 먼저 API 서버와 연결할 Client를 Realm에 생성해보자.<br>
 좌측 메뉴의 Clients - Create client 버튼을 클릭한다.
-<img src='/assets/img/post/keycloak/221215_spring-boot와-keycloak-연동하기/screenshot_01.png'>
+<img src='/assets/img/post/keycloak/221215_spring-boot와-keycloak-연동하기/screenshot_01.png' width='650'>
 
 Client ID를 입력하고 Next를 눌러 다음 페이지로 넘어간다.
-<img src='/assets/img/post/keycloak/221215_spring-boot와-keycloak-연동하기/screenshot_02.png'>
+<img src='/assets/img/post/keycloak/221215_spring-boot와-keycloak-연동하기/screenshot_02.png' width='650'>
 
 인증된 사용자의 요청만 API 서버로 들어가도록 할 것이기 때문에, Client에는 인증 설정이 되어 있어야 한다.
 
 OIDC 방식으로 인증하여 액세스할 수 있도록 설정하기 위해 Client authenticateion을 On으로 설정하고, 세부 권한 제어 활성화를 위해 Authorization을 On으로 변경한 후 Save 버튼을 눌러 Client를 생성한다.
-<img src='/assets/img/post/keycloak/221215_spring-boot와-keycloak-연동하기/screenshot_03.png'>
+<img src='/assets/img/post/keycloak/221215_spring-boot와-keycloak-연동하기/screenshot_03.png' width='650'>
 <br><br>
 
 
@@ -32,7 +32,7 @@ OIDC 방식으로 인증하여 액세스할 수 있도록 설정하기 위해 Cl
 Spring Boot 프로젝트는 Spring Initializr 사이트 _(<https://start.spring.io>)_ 에서 쉽게 생성할 수 있다.
 
 프로젝트 메타데이터를 입력하고 우측 Dependencies에 lombok, Spring web, OAuth2 Client를 추가한 후 Generate를 눌러 프로젝트 zip 파일을 다운받는다.
-<img src='/assets/img/post/keycloak/221215_spring-boot와-keycloak-연동하기/screenshot_04.png'>
+<img src='/assets/img/post/keycloak/221215_spring-boot와-keycloak-연동하기/screenshot_04.png' width='650'>
 
 원하는 폴더에 다운받은 zip 파일을 풀고, 프로젝트를 연다.
 <br><br>
@@ -48,17 +48,17 @@ _(Spring Boot Starter, Spring Security Adapter 디펜던시 추가)_
 implementation 'org.keycloak:keycloak-spring-boot-starter:19.0.2'
 implementation 'org.keycloak:keycloak-spring-security-adapter:19.0.2'
 ~~~
-<img src='/assets/img/post/keycloak/221215_spring-boot와-keycloak-연동하기/screenshot_05.png' width='650'>
+<img src='/assets/img/post/keycloak/221215_spring-boot와-keycloak-연동하기/screenshot_05.png' width='600'>
 <br>
 
 ### Spring Boot Adapter 설정
 그리고 application.properties 파일에 Keycloak 관련 Spring Boot Adapter 설정을 해주어야 한다.
 
 앞서 생성한 Client의 Client secret 값을 알아야 한다. Keycloak 관리자 콘솔에 접속하여 좌측 메뉴의 Client 탭을 누르고, 생성한 Client의 이름을 클릭한다.
-<img src='/assets/img/post/keycloak/221215_spring-boot와-keycloak-연동하기/screenshot_06.png' width='650'>
+<img src='/assets/img/post/keycloak/221215_spring-boot와-keycloak-연동하기/screenshot_06.png' width='600'>
 
 상단의 Crendentials 탭을 누르고, Client secret 값을 복사한다.
-<img src='/assets/img/post/keycloak/221215_spring-boot와-keycloak-연동하기/screenshot_07.png' width='650'>
+<img src='/assets/img/post/keycloak/221215_spring-boot와-keycloak-연동하기/screenshot_07.png' width='600'>
 
 다시 Spring Boot 프로젝트로 돌아와 application.properties 파일을 열어 다음 내용을 작성한다.
 ~~~ properties
@@ -147,17 +147,17 @@ public class TestController {
 이제 Spring Boot 프로젝트를 실행시키고, Postman으로 요청 테스트를 해본다.
 
 먼저 인증 없이 접근 가능한 `/permit-all` 엔드포인트 테스트이다.<br>헤더에 별도 인증 토큰을 넣어주지 않아도 정상적으로 응답이 리턴된다.
-<img src='/assets/img/post/keycloak/221215_spring-boot와-keycloak-연동하기/screenshot_09.png' width='730'>
+<img src='/assets/img/post/keycloak/221215_spring-boot와-keycloak-연동하기/screenshot_09.png' width='650'>
 
 다음은 인증된 사용자만 접근 가능한 `/authenticated` 엔드포인트 테스트이다.<br>헤더에 별도 인증 토큰을 넣지 않고 요청을 날리면, 다음과 같이 **401**(Unauthorized)이 리턴되는 것을 확인할 수 있다.
-<img src='/assets/img/post/keycloak/221215_spring-boot와-keycloak-연동하기/screenshot_10.png' width='730'>
+<img src='/assets/img/post/keycloak/221215_spring-boot와-keycloak-연동하기/screenshot_10.png' width='650'>
 
 > 위 엔드포인트에 대해 정상 값을 리턴받기 위해서는, 인증된 사용자의 액세스 토큰을 헤더에 넣어 요청해야 한다.<br>액세스 토큰을 발급받아 위 엔드포인트에 다시 요청을 날려보자!
 
 앞서 생성했던 사용자 _(user1)_ 의 계정으로 로그인하면 액세스 토큰을 발급받을 수 있다.
 
 `[KeycloakServer]/realms/[RealmName]/protocol/openid-connect/token` 으로 다음 값을 body에 넣어 요청한다.
-<img src='/assets/img/post/keycloak/221215_spring-boot와-keycloak-연동하기/screenshot_11.png' width='730'>
+<img src='/assets/img/post/keycloak/221215_spring-boot와-keycloak-연동하기/screenshot_11.png' width='650'>
 - **client_id** : Client 생성 시 설정한 이름 _(myapi)_
 - **username** : 로그인할 User 이름
 - **password** : 로그인할 User 계정에 설정한 패스워드
@@ -181,7 +181,7 @@ public class TestController {
 리턴받은 값 중 access_token 값을 복사하고, 인증이 필요했던 엔드포인트 _(`/authenticated`)_ 에 다시 요청을 날려보자.
 
 다시 Postman으로 돌아와 Authorization 탭에서 Type을 **Bearer Token**으로 선택하고, 복사해두었던 토큰 값을 붙여넣는다. 그리고나서 요청을 날리면 다음과 같이 정상적으로 결과가 리턴되는 것을 확인할 수 있다!
-<img src='/assets/img/post/keycloak/221215_spring-boot와-keycloak-연동하기/screenshot_12.png' width='730'>
+<img src='/assets/img/post/keycloak/221215_spring-boot와-keycloak-연동하기/screenshot_12.png' width='650'>
 <br><br>
 
 
