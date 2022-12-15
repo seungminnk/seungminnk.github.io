@@ -42,6 +42,20 @@ Realm 이름을 입력한 후 Create를 누르면 Realm이 생성되고, 해당 
 그 다음으로, 로그인을 위해서는 해당 user 계정의 비밀번호를 설정해주어야 한다.<br>
 앞서 생성한 user 상세 페이지에서 Credentials 탭 클릭, Set password 버튼을 누른다.
 <img src="/assets/img/post/keycloak/221214_realm과-user-생성하기/screenshot_06.png">
+
+설정할 비밀번호를 입력하고, 하단의 Temporary는 Off로 설정하여 Save 버튼을 눌러 저장한다.<br>
+_(Temporary를 On으로 설정하면, 최초 로그인 이후 비밀번호를 재설정하도록 한다.)_
+<img src="/assets/img/post/keycloak/221214_realm과-user-생성하기/screenshot_07.png" width="400">
+<img src="/assets/img/post/keycloak/221214_realm과-user-생성하기/screenshot_08.png">
+
+이제 생성한 User 계정으로 로그인을 시도해보자.<br>
+사용자 콘솔 _(http://localhost:8080/realms/[생성한Realm이름]/account)_ 에 접속하고, 우측 상단의 Sign in 버튼을 눌러 로그인 페이지로 넘어간다.
+<img src="/assets/img/post/keycloak/221214_realm과-user-생성하기/screenshot_09.png">
+<img src="/assets/img/post/keycloak/221214_realm과-user-생성하기/screenshot_10.png" width="400">
+
+설정해주었던 username과 password로 로그인 후, 다음과 같은 페이지로 넘어간다면 로그인이 성공적으로 완료된 것이다!
+<img src="/assets/img/post/keycloak/221214_realm과-user-생성하기/screenshot_11.png">
+
 <br>
 
 
@@ -53,8 +67,11 @@ Realm 이름을 입력한 후 Create를 누르면 Realm이 생성되고, 해당 
 ~~~ shell
 docker run --name keycloak -p 8080:8080 keycloak-demo start-dev
 ~~~
-관리자 콘솔에 접속하고 로그인한 후, 앞서 생성했던 Realm이 그대로 생성되어 있는 것을 확인할 수 있다.
-해당 Realm을 선택하고, Users 탭에 접속한 후 생성했던 user가 
+관리자 콘솔에 접속하고 로그인한 후, 앞서 생성했던 Realm이 존재하는 것을 확인할 수 있다.
+<img src="/assets/img/post/keycloak/221214_realm과-user-생성하기/screenshot_12.png" width="400">
+
+좌측 상단 Select box를 눌러 생성했던 Realm을 선택하고, Users 탭에 접속한다. 생성했던 user가 존재하는 것을 확인할 수 있다.<br>
+<img src="/assets/img/post/keycloak/221214_realm과-user-생성하기/screenshot_13.png" width="650">
 <br>
 
 
