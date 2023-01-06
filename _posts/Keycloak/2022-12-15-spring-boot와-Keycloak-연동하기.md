@@ -54,10 +54,10 @@ implementation 'org.keycloak:keycloak-spring-security-adapter:19.0.2'
 ### Spring Boot Adapter 설정
 그리고 application.properties 파일에 Keycloak 관련 Spring Boot Adapter 설정을 해주어야 한다.
 
-앞서 생성한 Client의 Client secret 값을 알아야 한다. Keycloak 관리자 콘솔에 접속하여 좌측 메뉴의 Client 탭을 누르고, 생성한 Client의 이름을 클릭한다.
+앞서 생성한 Client의 Client secret 값을 알아야 한다. Keycloak 관리자 콘솔에 접속하여 좌측 메뉴의 Client 탭을 누르고, 생성한 Client의 이름을 클릭한다.<br>
 <img src='/assets/img/post/keycloak/221215_spring-boot와-keycloak-연동하기/screenshot_06.png' width='600'>
 
-상단의 Crendentials 탭을 누르고, Client secret 값을 복사한다.
+상단의 Crendentials 탭을 누르고, Client secret 값을 복사한다.<br>
 <img src='/assets/img/post/keycloak/221215_spring-boot와-keycloak-연동하기/screenshot_07.png' width='600'>
 
 다시 Spring Boot 프로젝트로 돌아와 application.properties 파일을 열어 다음 내용을 작성한다.
