@@ -230,7 +230,7 @@ spec:
       storage: 50Gi   # Kubernetes 객체에서 사용 가능하도록 할 영구 볼륨 클레임 크기
 ~~~
 
-앞서 작성한 배포 설정의 파드 사양 부분과 영구 볼륨 클레임을 연결한다.
+앞서 작성한 배포 설정(Deployment)의 파드 사양 부분과 영구 볼륨 클레임을 연결한다.
 ~~~ yaml
 (생략)
 ...
@@ -277,4 +277,4 @@ spec:
 <br>
 
 
-### 다음 글> [GKE에 배포하기](<>)
+### 다음 글> [GKE에 배포하기](<http://localhost:4000/posts/Cloud-Build%EB%A5%BC-%EC%9D%B4%EC%9A%A9%ED%95%9C-GKE-%EC%9E%90%EB%8F%99-%EB%B0%B0%ED%8F%AC-%EC%84%A4%EC%A0%95%ED%95%98%EA%B8%B0-3/>)
