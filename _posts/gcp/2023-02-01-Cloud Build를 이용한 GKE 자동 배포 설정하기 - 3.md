@@ -1,7 +1,7 @@
 ---
 title: Cloud Build를 이용한 GKE 자동 배포 설정하기 - 3
 date: 2023-02-01 12:10:00 +0900
-categories: [DevOps, Google Cloud Platform]
+categories: [Google Cloud Platform]
 tags: [devops, gcp, gke, k8s, cloudbuild]
 ---
 
