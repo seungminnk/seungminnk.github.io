@@ -54,7 +54,7 @@ GCP 콘솔 > IAM > 서비스 계정 메뉴에 접속하여 Cloud Build의 서비
 
 권한 문제는 아니고, 그렇다면 그 다음은 네트워크 문제를 의심해보았다.
 
-Cloud Build에서 gradle test가 실행될 때 Db-A로의 접근이 불가능한 상황이니, Cloud Build가 실행되는 곳의 IP가 Db-A에 허용되지 않아 접속하지 못하는 것일 수 있겠다는 생각이 들었다.
+Cloud Build에서 gradle test가 실행될 때 Db-A로의 접근이 불가능한 상황이니, **Cloud Build가 실행되는 곳의 IP가 Db-A에 허용되지 않아 접속하지 못하는 것일 수 있겠다**는 생각이 들었다.
 
 그래서 Cloud Build에 ifconfig 명령어를 실행하여 출력하는 step을 추가하여 IP 주소를 알아내고, 그 IP 주소를 Db-A에 허용 IP로 추가해주었다.
 
@@ -63,19 +63,42 @@ Cloud Build에서 gradle test가 실행될 때 Db-A로의 접근이 불가능한
 
 **3. Cloud Build의 IP 대역 알아내기**
 
+실행할 때마다 Cloud Build의 IP가 바뀐다면, **IP가 할당되는 IP 대역을 알아내어 Db-A에 해당 대역을 추가하면 되겠다!**라는 생각이 들었다. IP가 바뀌더라도 해당 대역 내 IP라면 접속이 가능하겠지!라는 생각으로 Cloud Build가 실행되는 IP 대역을 알아내보기로 했다.
+
+Cloud Build의 IP가 할당되는 IP 대역 정보를 구글에 검색해보기도 하고, Chat GPT를 이용해 알아보려고도 했지만 명확한 IP 대역을 알 수 없었다. 그래서 2에서 했던 방식대로 빌드를 여러 번 실행해 직접 IP를 알아내고, 알아낸 IP들로 IP 범위를 추려낼 수 있을 것 같아 시도해보았지만 역시나 범위를 특정지을 수 없이 **무작위로 IP가 할당**되는 것을 확인할 수 있었고, 결국 이 방법도 실패했다.
 <br><br>
 
 **4. Cloud SQL Proxy 이용하기 ⭐️**
 
+앞서 시도했던 방법들이 모두 실패하고 난 후, 테스트 코드 실행 시에만 접근하는 DB를 생성하여 해당 DB는 모든 IP를 허용하도록 설정해두어야 하는 방법 밖에 없는걸까, 아니면 테스트 코드 실행할 때 실제 DB가 아닌 H2 같은 메모리 DB를 사용하도록 코드를 변경해야 할까 등 여러 생각을 하고 있었고, GCP 문서도 읽어보고 Chat GPT를 통해서도 해결 방법을 계속 찾아보고 있었다. 비공개 풀이나 VPC Connector를 사용해야 하는지도 고민하던 중에 **Cloud SQL Proxy**를 알게 되었고, 결론적으로 이를 적용해 테스트 코드 실행 시 Db-A에 접속하여 드디어! 테스트 코드 실행 후 빌드에 성공할 수 있었다! 😂
+
+Cloud SQL Proxy를 적용하고도 처음에는 여전히 테스트 코드 실행에 실패했었는데, 그 이유와 함께 Cloud SQL Proxy를 이용해 해당 문제를 해결한 방법에 대해 아래에서 더 자세히 설명하도록 하겠다 💪
 <br><br>
 
 
 ## Cloud SQL Proxy? 🤔
+먼저 Cloud SQL Proxy에 대해 간단히 알아보고 들어가자!
+
+Cloud SQL Proxy는 승인된 네트워크나 SSL 구성 없이도 인스턴스에 안전한 엑세스를 제공하는 Cloud SQL 커넥터이다.
+
+Cloud SQL 인증 프록시를 사용하면 다음과 같은 이점이 있다.
+- SSL 인증서 없이 연결이 가능하다.
+- IAM 권한을 사용해 Cloud SQL 인스턴스에 연결할 수 있는 사용자와 대상을 제어하기 때문에, Cloud SQL에 허용할 IP를 특별히 설정해주지 않아도 된다.
+- OAuth 2.0 액세스 토큰의 자동 새로고침을 지원하기 때문에, 필요에 따라 해당 기능을 사용할 수 있다.<br>_(자세한 내용은 [여기](https://cloud.google.com/sql/docs/mysql/authentication?hl=ko) 참고)_
 
 
 ## Cloud Build에서 비공개 DB에 접근하기
+자, 이제 Cloud Build에서 비공개 DB인 Db-A에 접근해 테스트 코드 실행에 성공할 수 있었던 방법에 대해 소개해보겠다! 😉
+
+앞서 언급했던 것처럼, DB에 Cloud Build가 실행되는 IP 주소나 IP 대역을 허용하도록 해보았지만, 규칙없이 무작위로 IP가 할당되어 실행되기 때문에 특정한 IP나 IP 대역을 설정해줄 수 없었다.
+
+Cloud SQL Proxy를 사용하면 DB에 허용할 IP를 설정해주지 않아도 간편하게 접속이 가능하다고 했다. 이를 이용해 다음과 같이 설정하면 된다.
+1. Cloud Build의 gradle test step 전에 Cloud SQL Proxy를 실행한다.
+2. 테스트 코드가 실행될 때 해당 프록시를 통해 DB에 접속하도록 한다.
 
 ### cloudbuild.yml 수정
+기존에 만들어 사용하고 있던 Cloud Build 트리거의 구성을 수정해보자. _(여기에서는 이미 사용하던 Cloud Build 트리거 설정이 있다고 가정한다. 기존에 사용하고 있던 트리거가 없다면, 새로 트리거를 생성할 때 다음과 같이 설정해주면 될 것이다.)_
+
 
 ### jdbc datasource 설정 변경
 
