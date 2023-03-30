@@ -64,13 +64,13 @@ spec:
 다음은 인그레스 설정이다.
 
 트래픽을 클러스터 내부 서비스로 라우팅하기 위해 인그레스를 사용한다. 여기에서는 **외부 HTTP(S) 부하 분산용 인그레스**를 설정할 것이다.<br>
-![image](/assets/img/post/devops/gcp/230125_cloudbuild를-이용한-gke-자동-배포-설정하기-2/screenshot_01.png){: width='600'}
+![image](/assets/img/post/gcp/230125_cloudbuild를-이용한-gke-자동-배포-설정하기-2/screenshot_01.png){: width='600'}
 
 인그레스 설정을 위해서는 고정 IP가 필요하다. 고정 IP 생성을 위해 **GCP 콘솔 - VPC 네트워크 - IP 주소** 페이지에 접속한 후, 상단의 **외부 고정 주소 예약**을 클릭한다.<br>
-![image](/assets/img/post/devops/gcp/230125_cloudbuild를-이용한-gke-자동-배포-설정하기-2/screenshot_02.png){: width='500'}
+![image](/assets/img/post/gcp/230125_cloudbuild를-이용한-gke-자동-배포-설정하기-2/screenshot_02.png){: width='500'}
 
 고정 IP 이름을 입력하고, 주소 유형을 **전역**으로 선택하여 고정 IP를 생성한다.
-![image](/assets/img/post/devops/gcp/230125_cloudbuild를-이용한-gke-자동-배포-설정하기-2/screenshot_03.png){: width='400'}
+![image](/assets/img/post/gcp/230125_cloudbuild를-이용한-gke-자동-배포-설정하기-2/screenshot_03.png){: width='400'}
 
 > 전역이 아닌 **리전**을 선택하여 생성하는 경우, 인그레스 설정 시에 kubernetes.io/ingress.global-static-ip-name 이 아닌 kubernetes.io/ingress.**regional**-static-ip-name 으로 설정해주어야 한다.
 
@@ -125,7 +125,7 @@ spec:
     unhealthyThreshold: 2
 ~~~
 - (*) : **GCP 콘솔 - 네트워크 보안 - SSL 정책** 페이지에서 설정한 ssl 정책 이름
-  ![image](/assets/img/post/devops/gcp/230125_cloudbuild를-이용한-gke-자동-배포-설정하기-2/screenshot_04.png){: width='600'}
+  ![image](/assets/img/post/gcp/230125_cloudbuild를-이용한-gke-자동-배포-설정하기-2/screenshot_04.png){: width='600'}
 
 
 ## 인증서 설정

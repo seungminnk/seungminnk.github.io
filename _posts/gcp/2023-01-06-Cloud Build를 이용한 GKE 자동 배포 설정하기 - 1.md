@@ -57,20 +57,20 @@ RUN /root/start.sh
 Docker 이미지 생성에 앞서, 이미지 생성과 배포를 진행할 Cloud Build 트리거부터 만들어보자.
 
 구글 클라우드 콘솔 - Cloud Build - 트리거 페이지로 접속한 후, 상단의 **트리거 만들기**를 클릭한다.
-![image](/assets/img/post/devops/gcp/230106_cloudbuild를-이용한-gke-자동-배포-설정하기-1/screenshot_01.png){: width='400'}
+![image](/assets/img/post/gcp/230106_cloudbuild를-이용한-gke-자동-배포-설정하기-1/screenshot_01.png){: width='400'}
 
 트리거 이름을 입력하고, 이 트리거를 어느 경우에 호출할 지 선택한다.<br>
 이벤트 설정은 **수동 호출**로 선택한다. _(특정 브랜치 혹은 새 태그가 원격 저장소에 푸시되었을 때 트리거가 자동으로 호출되도록 할 수도 있다!)_ <br>
-![image](/assets/img/post/devops/gcp/230106_cloudbuild를-이용한-gke-자동-배포-설정하기-1/screenshot_02.png){: width='450'}
+![image](/assets/img/post/gcp/230106_cloudbuild를-이용한-gke-자동-배포-설정하기-1/screenshot_02.png){: width='450'}
 
 수동 호출을 클릭하면, 바로 하단 부분(소스)이 아래와 같이 활성화되는데, 소스코드를 클론할 **원격 저장소**와 **기준 브랜치**를 설정한다.<br>
-![image](/assets/img/post/devops/gcp/230106_cloudbuild를-이용한-gke-자동-배포-설정하기-1/screenshot_03.png){: width='450'}
+![image](/assets/img/post/gcp/230106_cloudbuild를-이용한-gke-자동-배포-설정하기-1/screenshot_03.png){: width='450'}
 
 다음은 구성 설정이다.<br>
 
 Cloud Build 구성 파일을 선택하고, 해당 파일을 소스코드에서 불러올지 트리거 설정에 인라인으로 작성할지 설정한다.<br>
 여기에서는 트리거에 인라인 yaml을 작성하도록 선택하자.<br>
-![image](/assets/img/post/devops/gcp/230106_cloudbuild를-이용한-gke-자동-배포-설정하기-1/screenshot_04.png){: width='300'}
+![image](/assets/img/post/gcp/230106_cloudbuild를-이용한-gke-자동-배포-설정하기-1/screenshot_04.png){: width='300'}
 
 아래의 **편집기 열기** 버튼을 눌러 다음과 같이 작성해준다.<br>
 *(snapshot, SHORT_SHA 태그를 달아 컨테이너를 빌드하여 이미지를 생성하라는 의미이다.)*
@@ -90,7 +90,7 @@ steps:
 java의 경우, GCP에서 **Jib** 이라는 라이브러리를 제공한다.<br>
 Dockerfile을 작성하고, Docker를 설치해 이미지를 빌드할 필요 없이 Jib을 이용해 컨테이너를 빌드할 수 있다.<br>
 _(<https://cloud.google.com/java/getting-started/jib?hl=ko>)_
-![image](/assets/img/post/devops/gcp/230106_cloudbuild를-이용한-gke-자동-배포-설정하기-1/screenshot_05.png){: width='600'}
+![image](/assets/img/post/gcp/230106_cloudbuild를-이용한-gke-자동-배포-설정하기-1/screenshot_05.png){: width='600'}
 
 
 
@@ -111,23 +111,23 @@ _(<https://cloud.google.com/java/getting-started/jib?hl=ko>)_
 
 생성된 트리거 우측의 실행을 누르고, 하단의 트리거 실행을 누르면 트리거가 실행된다.<br>
 *(분기 부분에 다른 브랜치 이름을 입력해 실행하면, 해당 브랜치 기준으로 빌드를 실행할 수도 있다.)*<br>
-![image](/assets/img/post/devops/gcp/230106_cloudbuild를-이용한-gke-자동-배포-설정하기-1/screenshot_06.png)
-![image](/assets/img/post/devops/gcp/230106_cloudbuild를-이용한-gke-자동-배포-설정하기-1/screenshot_07.png){: width='300'}
+![image](/assets/img/post/gcp/230106_cloudbuild를-이용한-gke-자동-배포-설정하기-1/screenshot_06.png)
+![image](/assets/img/post/gcp/230106_cloudbuild를-이용한-gke-자동-배포-설정하기-1/screenshot_07.png){: width='300'}
 
 트리거를 실행한 후, 좌측 메뉴의 **기록** 페이지로 접속하여 빌드 히스토리를 확인할 수 있다.
 
 가장 상단에 실행 중인 빌드를 클릭하여 빌드 실행 상태를 실시간으로 확인가능하다.
-![image](/assets/img/post/devops/gcp/230106_cloudbuild를-이용한-gke-자동-배포-설정하기-1/screenshot_08.png)
-![image](/assets/img/post/devops/gcp/230106_cloudbuild를-이용한-gke-자동-배포-설정하기-1/screenshot_09.png)
+![image](/assets/img/post/gcp/230106_cloudbuild를-이용한-gke-자동-배포-설정하기-1/screenshot_08.png)
+![image](/assets/img/post/gcp/230106_cloudbuild를-이용한-gke-자동-배포-설정하기-1/screenshot_09.png)
 
 
 빌드가 성공적으로 완료되었다면, Container Registry에 이미지가 잘 푸시되었는지 확인해보자.
 
 **Container Registry - 이미지** 페이지로 접속하면 다음과 같이 저장소가 생성되어 있다.
-![image](/assets/img/post/devops/gcp/230106_cloudbuild를-이용한-gke-자동-배포-설정하기-1/screenshot_10.png){: width='400'}
+![image](/assets/img/post/gcp/230106_cloudbuild를-이용한-gke-자동-배포-설정하기-1/screenshot_10.png){: width='400'}
 
 저장소 이름을 클릭하면 Docker 이미지가 생성되어 있는 것을 확인할 수 있다.
-![image](/assets/img/post/devops/gcp/230106_cloudbuild를-이용한-gke-자동-배포-설정하기-1/screenshot_11.png){: width='600'}
+![image](/assets/img/post/gcp/230106_cloudbuild를-이용한-gke-자동-배포-설정하기-1/screenshot_11.png){: width='600'}
 
 
 <br>

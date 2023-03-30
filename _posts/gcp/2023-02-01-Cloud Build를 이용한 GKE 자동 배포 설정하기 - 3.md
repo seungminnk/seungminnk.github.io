@@ -14,11 +14,11 @@ tags: [devops, gcp, gke, k8s, cloudbuild]
 가장 먼저 Kubernetes 클러스터를 생성해주어야 한다.
 
 구글 클라우드 콘솔 - Kubernetes Engine - 클러스터 페이지에 접속하여, 아래와 같이 만들기 버튼을 눌러 Autopilot 클러스터를 구성한다.<br>
-![image](/assets/img/post/devops/gcp/230201_cloudbuild를-이용한-gke-자동-배포-설정하기-3/screenshot_01.png){: width='600'}
-![image](/assets/img/post/devops/gcp/230201_cloudbuild를-이용한-gke-자동-배포-설정하기-3/screenshot_02.png){: width='450'}
+![image](/assets/img/post/gcp/230201_cloudbuild를-이용한-gke-자동-배포-설정하기-3/screenshot_01.png){: width='600'}
+![image](/assets/img/post/gcp/230201_cloudbuild를-이용한-gke-자동-배포-설정하기-3/screenshot_02.png){: width='450'}
 
 클러스터 이름을 입력하고, 네트워크 액세스는 비공개 클러스터로 선택한다.<br>
-![image](/assets/img/post/devops/gcp/230201_cloudbuild를-이용한-gke-자동-배포-설정하기-3/screenshot_03.png){: width='450'}
+![image](/assets/img/post/gcp/230201_cloudbuild를-이용한-gke-자동-배포-설정하기-3/screenshot_03.png){: width='450'}
 > **⚠️ 주의 ⚠️** <br>
 네트워크 액세스를 비공개 클러스터로 설정하면, **pod에서 외부 네트워크로 접속이 되지 않는다.**
 그래서 웬만하면 공개 클러스터로 설정할 것을 추천한다😅 <br>
@@ -26,11 +26,11 @@ _(세팅 과정에서 비공개 클러스터로 설정하면 보안 상 더 좋�
 <br>
 
 나머지 설정은 그대로 두고, 만들기 버튼을 눌러 클러스터를 생성한다.<br>
-![image](/assets/img/post/devops/gcp/230201_cloudbuild를-이용한-gke-자동-배포-설정하기-3/screenshot_04.png){: width='700'}
+![image](/assets/img/post/gcp/230201_cloudbuild를-이용한-gke-자동-배포-설정하기-3/screenshot_04.png){: width='700'}
 
 
 클러스터가 완전히 생성되는 데에는 시간이 조금 걸린다. 시간이 조금 지난 후에 아래와 같이 클러스터가 생성된 것을 확인할 수 있다.<br>
-![image](/assets/img/post/devops/gcp/230201_cloudbuild를-이용한-gke-자동-배포-설정하기-3/screenshot_05.png){: width='450'}
+![image](/assets/img/post/gcp/230201_cloudbuild를-이용한-gke-자동-배포-설정하기-3/screenshot_05.png){: width='450'}
 
 <br>
 
@@ -47,14 +47,14 @@ gcloud container clusters get-credentials [CLUSTER_NAME] --zone [ZONE]
 ~~~ shell
 kubectl get namespace
 ~~~
-![image](/assets/img/post/devops/gcp/230201_cloudbuild를-이용한-gke-자동-배포-설정하기-3/screenshot_06.png){: width='550'}
+![image](/assets/img/post/gcp/230201_cloudbuild를-이용한-gke-자동-배포-설정하기-3/screenshot_06.png){: width='550'}
 
 deployment.yaml 파일에 명시해주었던 이름으로 네임스페이스를 생성한다.<br>
 _(이전 글에서 deployment.yaml 파일에 네임스페이스 이름을 api로 명시해두었으므로 아래와 같이 api라는 이름으로 네임스페이스를 생성한다.)_
 ~~~ shell
 kubectl create namespace api
 ~~~
-![image](/assets/img/post/devops/gcp/230201_cloudbuild를-이용한-gke-자동-배포-설정하기-3/screenshot_07.png){: width='550'}
+![image](/assets/img/post/gcp/230201_cloudbuild를-이용한-gke-자동-배포-설정하기-3/screenshot_07.png){: width='550'}
 
 <br>
 
@@ -65,7 +65,7 @@ Cloud Build에서 GKE 배포를 진행하려면, Cloud Build에 권한 추가를
 **구글 클라우드 콘솔 - Cloud Build - 설정** 에 접속한다.
 
 Kubernetes Engine 개발자 역할의 상태를 **사용 설정**으로 변경한다.<br>
-![image](/assets/img/post/devops/gcp/230201_cloudbuild를-이용한-gke-자동-배포-설정하기-3/screenshot_08.png){: width='400'}
+![image](/assets/img/post/gcp/230201_cloudbuild를-이용한-gke-자동-배포-설정하기-3/screenshot_08.png){: width='400'}
 
 <br>
 
@@ -94,18 +94,18 @@ Kubernetes Engine 개발자 역할의 상태를 **사용 설정**으로 변경�
 
 해당 빌드가 성공적으로 완료되었다면, **구글 클라우드 콘솔 - Kubernetes Engine** 에서 아래 내용들을 확인해보자.
 1. **작업 부하** 메뉴를 클릭하고, **워크로드**가 잘 생성되었는지 확인<br>
-![image](/assets/img/post/devops/gcp/230201_cloudbuild를-이용한-gke-자동-배포-설정하기-3/screenshot_09.png){: width='550'}
-![image](/assets/img/post/devops/gcp/230201_cloudbuild를-이용한-gke-자동-배포-설정하기-3/screenshot_10.png){: width='650'}<br>
+![image](/assets/img/post/gcp/230201_cloudbuild를-이용한-gke-자동-배포-설정하기-3/screenshot_09.png){: width='550'}
+![image](/assets/img/post/gcp/230201_cloudbuild를-이용한-gke-자동-배포-설정하기-3/screenshot_10.png){: width='650'}<br>
 
 2. **서비스 및 수신 - 인그레스** 메뉴를 클릭하고, **인그레스 객체**가 잘 생성되었는지 확인<br>
-![image](/assets/img/post/devops/gcp/230201_cloudbuild를-이용한-gke-자동-배포-설정하기-3/screenshot_11.png){: width='700'}<br>
+![image](/assets/img/post/gcp/230201_cloudbuild를-이용한-gke-자동-배포-설정하기-3/screenshot_11.png){: width='700'}<br>
 
 3. 생성된 인그레스를 눌러 **프론트엔드 및 백엔드 설정**이 잘 되어있는지 확인<br>
-![image](/assets/img/post/devops/gcp/230201_cloudbuild를-이용한-gke-자동-배포-설정하기-3/screenshot_12.png){: width='600'}<br>
+![image](/assets/img/post/gcp/230201_cloudbuild를-이용한-gke-자동-배포-설정하기-3/screenshot_12.png){: width='600'}<br>
 
 4. **서비스 및 수신 - 서비스** 메뉴를 클릭하고, **서비스 객체**가 잘 생성되었는지 확인
-![image](/assets/img/post/devops/gcp/230201_cloudbuild를-이용한-gke-자동-배포-설정하기-3/screenshot_13.png){: width='600'}
-![image](/assets/img/post/devops/gcp/230201_cloudbuild를-이용한-gke-자동-배포-설정하기-3/screenshot_14.png){: width='600'}<br>
+![image](/assets/img/post/gcp/230201_cloudbuild를-이용한-gke-자동-배포-설정하기-3/screenshot_13.png){: width='600'}
+![image](/assets/img/post/gcp/230201_cloudbuild를-이용한-gke-자동-배포-설정하기-3/screenshot_14.png){: width='600'}<br>
 
 5. **(선택사항)** &nbsp; Filestore가 지정 폴더에 마운트되었는지 확인<br>
 a. 현재 실행중인 파드에 접속
@@ -121,13 +121,13 @@ b. 지정한 폴더로 이동하여 파일이 제대로 마운트 되었는지 �
 인증서 프로비저닝을 위해 인그레스 IP와 ManagedCertificated 객체에 설정해 준 도메인을 매핑해주어야 한다.
 
 인그레스 목록에서 인그레스 IP를 확인하여 복사해둔다.<br>
-![image](/assets/img/post/devops/gcp/230201_cloudbuild를-이용한-gke-자동-배포-설정하기-3/screenshot_15.png){: width='500'}
+![image](/assets/img/post/gcp/230201_cloudbuild를-이용한-gke-자동-배포-설정하기-3/screenshot_15.png){: width='500'}
 
 그리고 나서 사용중인 호스팅 서비스 사이트에 접속하여, 도메인과 IP주소를 매핑해주면 된다.
 
 인증서가 프로비저닝 되는 데에 약간의 시간이 걸린다. 잠시 기다린 후, **부하분산 - 인증서** 목록에서 아래와 같이 프로비저닝이 완료된 것을 확인할 수 있다.
 _(부하 분산 페이지에서 하단의 **부하분산 구성요소 뷰**를 클릭하면 인증서 탭에 접근할 수 있다.)_<br>
-![image](/assets/img/post/devops/gcp/230201_cloudbuild를-이용한-gke-자동-배포-설정하기-3/screenshot_16.png){: width='700'}
+![image](/assets/img/post/gcp/230201_cloudbuild를-이용한-gke-자동-배포-설정하기-3/screenshot_16.png){: width='700'}
 
 이제 설정해 둔 도메인으로 접속하면, 정상적으로 서버가 실행되고 있음을 확인할 수 있다!
 
