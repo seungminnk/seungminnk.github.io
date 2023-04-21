@@ -120,7 +120,7 @@ Cloud Build 트리거 구성을 수정해보자.
         chmod +x cloud_sql_proxy
 
         ./cloud_sql_proxy
-        -instances=afoter:asia-northeast3:dev-db=tcp:0.0.0.0:13306
+        -instances=[INSTANCE_CONNECTION_NAME]=tcp:0.0.0.0:13306
         -credential_file=[CREDENTIAL_FILE] &
     entrypoint: bash
   (생략)
@@ -148,8 +148,8 @@ Cloud Build에서 Cloud SQL Proxy를 실행한 후에 해당 포트가 열려있
         chmod +x cloud_sql_proxy
 
         ./cloud_sql_proxy
-        -instances=afoter:asia-northeast3:dev-db=tcp:0.0.0.0:13306
-        -credential_file=afoter-google-auth.json &
+        -instances=[INSTANCE_CONNECTION_NAME]=tcp:0.0.0.0:13306
+        -credential_file=[CREDENTIAL_FILE] &
 				
         apt-get update && apt-get install -y netstat				
         nc -vz localhost 13306 && echo "Port is open!" || echo "Port is closed!"
@@ -186,8 +186,8 @@ Cloud Build 트리거를 다시 실행하여 확인해보았을 때, **13306번 
         chmod +x cloud_sql_proxy
 
         ./cloud_sql_proxy
-        -instances=afoter:asia-northeast3:dev-db=tcp:0.0.0.0:13306
-        -credential_file=afoter-google-auth.json &
+        -instances=[INSTANCE_CONNECTION_NAME]=tcp:0.0.0.0:13306
+        -credential_file=[CREDENTIAL_FILE] &
 
         ./gradlew clean && ./gradlew test && ./gradlew jacocoTestCoverageVerification
     entrypoint: bash
