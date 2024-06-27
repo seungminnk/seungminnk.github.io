@@ -1,5 +1,5 @@
 ---
-title: Keycloak 소셜로그인 설정하기
+title: Keycloak에서 소셜로그인 설정하기
 date: 2022-12-15 15:08:00 +0900
 categories: [Keycloak]
 tags: [keycloak, authentication, oauth]
