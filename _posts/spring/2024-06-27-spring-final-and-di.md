@@ -7,13 +7,13 @@ tags: [spring, di, final, java]
 
 컨트롤러에 Service 클래스를 선언하고, @AllArgsConstructor를 클래스 상단에 선언하여 생성자 주입을 받을 수 있도록 했다. 그런데 다음과 같이 IntelliJ에서 해당 변수에 마크 표시가 되어 있었다.
 <br>
-![image](/assets/img/post/spring/240627_final-키워드와-의존성-주입/screenshot_01.png){: width='300'}
+![image](/assets/img/post/spring/240627_final과-의존성-주입/screenshot_01.png){: width='300'}
 
 
 표시된 부분에 커서를 올려보니 해당 필드를 final로 선언할 수 있다는 메시지가 떴다. <br>
 _( 좀 더 자세한 설명을 보기 위해 우측의 … 을 눌러 Show inspection description을 클릭해, 다음과 같은 메시지를 확인할 수 있었다. )_
 <br>
-![image](/assets/img/post/spring/240627_final-키워드와-의존성-주입/screenshot_02.png){: width='600'}
+![image](/assets/img/post/spring/240627_final과-의존성-주입/screenshot_02.png){: width='600'}
 
 클래스의 필드를 final로 선언할 수 있는 조건에 대해 설명하고 있는데, 사용하고자 하는 필드는 non-static 필드이므로 해당 부분만 요약하자면 다음과 같다.
 
