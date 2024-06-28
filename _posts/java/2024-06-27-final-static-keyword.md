@@ -74,39 +74,6 @@ static 키워드는 클래스 멤버인 변수, 메서드에 적용될 수 있�
     PrintUtil.printMessage("Hello, World!");
     ~~~
     
-    <div class="promt-info">
-        <h5>인스턴스 객체를 통해 static 메서드에 접근해도 괜찮을까?!</h5>
-        <p>
-            갑자기 든 의문점, static 메서드를 클래스명.메서드명()으로 접근하지 않고, <b>인스턴스를 생성해 해당 객체의 메서드를 호출하도록 하면 어떻게 될까?!</b><br>
-            Java에서 static 메서드는 인스턴스 객체를 통해 호출하는 것도 가능하지만, 클래스명으로 접근하는 것을 권장한다고 한다.<br>
-            다음 예시를 살펴보며 알아보자. <i>static 메서드를 클래스명과 인스턴스 객체를 통해 호출하는 예제이다.</i><br>
-        <!-- </p> -->
-        
-        <pre><code>
-        class MyClass {
-            static void staticMethod() {
-                System.out.println("Static method called.");
-            }
-        }
-
-        public class Main {
-            public static void main(String[] args) {
-                // 클래스명을 통한 호출 (권장)
-                MyClass.staticMethod();
-
-                // 인스턴스 객체를 통한 호출 (비권장)
-                MyClass obj = new MyClass();
-                obj.staticMethod(); // 컴파일러 경고 없이 동작
-            }
-        }
-        </code></pre>
-
-        <!-- <p> -->
-            static 메서드를 인스턴스 객체를 통해 호출해도 컴파일러에서는 아무런 에러를 내지 않는다. 실행 시에도 정상적으로 동작한다.<br>
-            인스턴스 객체를 통해 호출하더라도, 실제로는 내부적으로 <b>클래스를 통해 호출하는 방식으로 동작</b>한다. <i>(obj.staticMethod()가 MyClass.staticMethod()와 동일하게 동작하는 것!)</i>
-        </p>
-    </div>
-    
 3. **static 블록**
     - **클래스가 처음 로드될 때 실행되는 코드 블록**이다.
     - 클래스 변수의 초기화나 복잡한 초기화 로직을 수행할 때 사용한다.
@@ -126,7 +93,7 @@ static 키워드는 클래스 멤버인 변수, 메서드에 적용될 수 있�
 
 갑자기 든 생각! 만약 static 메서드를 클래스명.메서드명()으로 접근하지 않고, **인스턴스를 생성해 해당 객체의 메서드를 호출하도록 하면 어떻게 될까?!**
 
-Java에서 static 메서드는 인스턴스 객체를 통해 호출하는 것도 가능하지만, 클래스명으로 접근하는 것을 권장한다고 한다.
+Java에서 static 메서드는 인스턴스 객체를 통해 호출하는 것도 가능하지만, <b>클래스명으로 접근하는 것을 권장</b>한다.
 
 ~~~java
 class MyClass {
