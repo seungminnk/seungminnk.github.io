@@ -24,7 +24,7 @@ public class Example {
     // 선언 시점에 초기화
     private final int instanceFinalField = 10;
 
-		// 인스턴스 초기화 블록에서 초기화
+    // 인스턴스 초기화 블록에서 초기화
     {
         instanceFinalField = 10; 
     }
